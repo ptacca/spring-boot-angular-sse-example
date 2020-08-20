@@ -14,9 +14,9 @@ public abstract class Event {
 
     private String name;
 
-    private Object data;
+    private Object metadata;
 
-    private String comment;
+    private String description;
 
     public Event() {
     }
@@ -45,12 +45,12 @@ public abstract class Event {
         this.status = status;
     }
 
-    public Object getData() {
-        return data;
+    public Object getMetadata() {
+        return metadata;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    public void setMetadata(Object metadata) {
+        this.metadata = metadata;
     }
 
     public String getName() {
@@ -61,12 +61,12 @@ public abstract class Event {
         this.name = name;
     }
 
-    public String getComment() {
-        return comment;
+    public String getDescription() {
+        return description;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public EventPriority getPriority() {
@@ -85,8 +85,8 @@ public abstract class Event {
                 ", status=" + status +
                 ", priority=" + priority +
                 ", name='" + name + '\'' +
-                ", data=" + data +
-                ", comment='" + comment + '\'' +
+                ", data=" + metadata +
+                ", comment='" + description + '\'' +
                 '}';
     }
 }

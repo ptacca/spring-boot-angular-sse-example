@@ -14,8 +14,8 @@ public class SimpleEvent extends Event {
         this.setPriority(EventPriority.LOW);
         this.setType(EventType.NOTIFICATION);
         this.setStatus(EventStatus.SUCCESSFUL);
-        this.setComment("comment");
+        this.setDescription("description");
         this.setTimestamp(LocalDateTime.now());
-        this.setData("data");
+        this.setMetadata("metadata");
     }
 }
