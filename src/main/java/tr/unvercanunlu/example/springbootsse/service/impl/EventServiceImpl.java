@@ -3,6 +3,7 @@ package tr.unvercanunlu.example.springbootsse.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import tr.unvercanunlu.example.springbootsse.component.EventToSseEventMapper;
@@ -18,6 +19,9 @@ public class EventServiceImpl implements EventService {
     public static final Logger LOGGER = LoggerFactory.getLogger(EventServiceImpl.class);
 
     private List<SseEmitter> emitters;
+
+    @Value("${sse-reconnect}")
+    private Long reconnectInMilliseconds;
 
     @Autowired
     private EventToSseEventMapper eventToSseEventMapper;
@@ -47,7 +51,7 @@ public class EventServiceImpl implements EventService {
 
         this.emitters.forEach(emitter -> {
             try {
-                SseEmitter.SseEventBuilder builder = eventToSseEventMapper.map(event);
+                SseEmitter.SseEventBuilder builder = eventToSseEventMapper.map(event, reconnectInMilliseconds);
                 LOGGER.info("Event is created.");
 
                 emitter.send(builder);

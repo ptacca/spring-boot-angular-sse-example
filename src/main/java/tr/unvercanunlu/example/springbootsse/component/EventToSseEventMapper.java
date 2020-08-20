@@ -2,7 +2,6 @@ package tr.unvercanunlu.example.springbootsse.component;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
@@ -18,25 +17,15 @@ public class EventToSseEventMapper {
 
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern(DateTimeFormat.TIMESTAMP_FORMAT);
 
-    @Value("${sse-reconnect}")
-    private Long reconnectInMilliseconds;
-
-    public SseEventBuilder map(Event event) {
-        String eventNameAsKebabCase = String.join("-",
-                event.getName().toLowerCase(),
-                event.getType().name().toLowerCase(),
-                event.getPriority().name().toLowerCase(),
-                event.getStatus().name().toLowerCase()
-        );
-
+    public SseEventBuilder map(Event event, Long reconnectInMilliseconds) {
         SseEventBuilder sseEventBuilder = SseEmitter.event()
-                .name(eventNameAsKebabCase)
-                .data(event.getData())
+                .name(event.getName().toLowerCase())
+                .data(event)
                 .id(event.getTimestamp().format(TIMESTAMP_FORMATTER))
-                .comment(event.getComment())
+                .comment(event.getDescription())
                 .reconnectTime(reconnectInMilliseconds);
 
-        LOGGER.info("Event is mapped to SseEvent: " + eventNameAsKebabCase);
+        LOGGER.info("Event is mapped to SseEvent: " + event.getName().toLowerCase());
 
         return sseEventBuilder;
     }
