@@ -1,7 +1,6 @@
 package tr.unvercanunlu.example.springbootsse.model;
 
-public enum  EventPriority {
-
+public enum EventPriority {
     HIGH,
     LOW
 }
