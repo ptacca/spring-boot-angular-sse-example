@@ -22,7 +22,7 @@ public class ProductEvent extends Event {
         this.setName("product");
         this.setPriority(EventPriority.LOW);
         this.setType(EventType.NOTIFICATION);
-        this.setStatus(EventStatus.SUCCESSFUL);
+        this.setStatus(EventStatus.SUCCESS);
         this.setDescription("description");
         this.setTimestamp(LocalDateTime.now());
         this.setMetadata(product);
