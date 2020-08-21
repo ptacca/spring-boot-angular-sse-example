@@ -8,9 +8,9 @@ import tr.unvercanunlu.example.springbootsse.structure.EventType;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-public class SimpleProductEvent extends Event {
+public class ProductEvent extends Event {
 
-    public SimpleProductEvent() {
+    public ProductEvent() {
         Product product = new Product();
         product.setId(12345L);
         product.setName("product");
@@ -19,7 +19,7 @@ public class SimpleProductEvent extends Event {
         product.setCreatedDate(LocalDateTime.now().minus(10, ChronoUnit.DAYS));
         product.setUpdatedData(LocalDateTime.now());
 
-        this.setName("simple");
+        this.setName("product");
         this.setPriority(EventPriority.LOW);
         this.setType(EventType.NOTIFICATION);
         this.setStatus(EventStatus.SUCCESSFUL);

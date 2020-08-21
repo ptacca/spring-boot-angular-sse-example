@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import tr.unvercanunlu.example.springbootsse.model.SimpleProductEvent;
+import tr.unvercanunlu.example.springbootsse.model.ProductEvent;
 import tr.unvercanunlu.example.springbootsse.service.impl.EventServiceImpl;
 import tr.unvercanunlu.example.springbootsse.structure.Event;
 
@@ -51,14 +51,13 @@ public class EventController {
         return ResponseEntity.ok(emitter);
     }
 
-    // Test
-    @GetMapping(value = "/testSimpleEvent")
+    @GetMapping(value = "/test")
     public ResponseEntity<?> generateSimpleEventAndSend() {
-        Event simpleEvent = new SimpleProductEvent();
-        LOGGER.info("Simple Event is created: " + simpleEvent.toString());
+        Event productEvent = new ProductEvent();
+        LOGGER.info("Product Event is created: " + productEvent.toString());
 
-        this.eventService.send(simpleEvent);
-        LOGGER.info("Simple Event is sent to Emitter List: " + simpleEvent.toString());
+        this.eventService.send(productEvent);
+        LOGGER.info("Product Event is sent to Emitter List: " + productEvent.toString());
 
         return ResponseEntity.noContent().build();
     }
