@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ public class EventController {
     private EventServiceImpl eventService;
 
     @GetMapping(value = "/subscribe")
-    public SseEmitter subscribe() {
+    public ResponseEntity<SseEmitter> subscribe() {
         SseEmitter emitter = new SseEmitter(timeoutInMilliseconds);
         LOGGER.info("Emitter is initialized.");
 
@@ -47,16 +48,18 @@ public class EventController {
         eventService.getEmitters().add(emitter);
         LOGGER.info("Emitter is added to Emitter list.");
 
-        return emitter;
+        return ResponseEntity.ok(emitter);
     }
 
     // Test
     @GetMapping(value = "/testSimpleEvent")
-    public void generateSimpleEventAndSend() {
+    public ResponseEntity<?> generateSimpleEventAndSend() {
         Event simpleEvent = new SimpleEvent();
         LOGGER.info("Simple Event is created: " + simpleEvent.toString());
 
         this.eventService.send(simpleEvent);
-        LOGGER.info("Simple Event is sent to Emiter List: " + simpleEvent.toString());
+        LOGGER.info("Simple Event is sent to Emitter List: " + simpleEvent.toString());
+
+        return ResponseEntity.noContent().build();
     }
 }
