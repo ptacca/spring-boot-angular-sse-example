@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import tr.unvercanunlu.example.springbootsse.event.SimpleEvent;
-import tr.unvercanunlu.example.springbootsse.model.Event;
+import tr.unvercanunlu.example.springbootsse.model.SimpleProductEvent;
 import tr.unvercanunlu.example.springbootsse.service.impl.EventServiceImpl;
+import tr.unvercanunlu.example.springbootsse.structure.Event;
 
 @RestController
 @RequestMapping(value = "/events")
@@ -54,7 +54,7 @@ public class EventController {
     // Test
     @GetMapping(value = "/testSimpleEvent")
     public ResponseEntity<?> generateSimpleEventAndSend() {
-        Event simpleEvent = new SimpleEvent();
+        Event simpleEvent = new SimpleProductEvent();
         LOGGER.info("Simple Event is created: " + simpleEvent.toString());
 
         this.eventService.send(simpleEvent);

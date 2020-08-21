@@ -1,4 +1,4 @@
-package tr.unvercanunlu.example.springbootsse.model;
+package tr.unvercanunlu.example.springbootsse.structure;
 
 import java.time.LocalDateTime;
 
@@ -85,8 +85,8 @@ public abstract class Event {
                 ", status=" + status +
                 ", priority=" + priority +
                 ", name='" + name + '\'' +
-                ", data=" + metadata +
-                ", comment='" + description + '\'' +
+                ", metadata=" + metadata +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

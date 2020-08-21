@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import tr.unvercanunlu.example.springbootsse.component.EventToSseEventMapper;
-import tr.unvercanunlu.example.springbootsse.model.Event;
 import tr.unvercanunlu.example.springbootsse.service.EventService;
+import tr.unvercanunlu.example.springbootsse.structure.Event;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 import tr.unvercanunlu.example.springbootsse.constant.DateTimeFormat;
-import tr.unvercanunlu.example.springbootsse.model.Event;
+import tr.unvercanunlu.example.springbootsse.structure.Event;
 
 import java.time.format.DateTimeFormatter;
 

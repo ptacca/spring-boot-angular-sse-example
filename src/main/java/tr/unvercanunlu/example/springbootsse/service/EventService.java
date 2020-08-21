@@ -1,6 +1,6 @@
 package tr.unvercanunlu.example.springbootsse.service;
 
-import tr.unvercanunlu.example.springbootsse.model.Event;
+import tr.unvercanunlu.example.springbootsse.structure.Event;
 
 public interface EventService {
 
