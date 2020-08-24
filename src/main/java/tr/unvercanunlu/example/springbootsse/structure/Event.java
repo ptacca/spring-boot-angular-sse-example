@@ -1,10 +1,13 @@
 package tr.unvercanunlu.example.springbootsse.structure;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import tr.unvercanunlu.example.springbootsse.constant.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
-public abstract class Event {
+public class Event {
 
-    private LocalDateTime timestamp;
+    private String name;
 
     private EventType type;
 
@@ -12,21 +15,22 @@ public abstract class Event {
 
     private EventPriority priority;
 
-    private String name;
+    private String metadata;
 
-    private Object metadata;
+    @JsonFormat(pattern = DateTimeFormat.TIMESTAMP_FORMAT)
+    private LocalDateTime timestamp;
 
     private String description;
 
     public Event() {
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public String getName() {
+        return name;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public EventType getType() {
@@ -45,20 +49,20 @@ public abstract class Event {
         this.status = status;
     }
 
-    public Object getMetadata() {
-        return metadata;
+    public EventPriority getPriority() {
+        return priority;
     }
 
-    public void setMetadata(Object metadata) {
-        this.metadata = metadata;
+    public void setPriority(EventPriority priority) {
+        this.priority = priority;
     }
 
-    public String getName() {
-        return name;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getDescription() {
@@ -69,26 +73,24 @@ public abstract class Event {
         this.description = description;
     }
 
-    public EventPriority getPriority() {
-        return priority;
+    public String getMetadata() {
+        return metadata;
     }
 
-    public void setPriority(EventPriority priority) {
-        this.priority = priority;
+    public void setMetadata(String metadata) {
+        this.metadata = metadata;
     }
 
     @Override
     public String toString() {
         return "Event{" +
-                "timestamp=" + timestamp +
+                "name='" + name + '\'' +
                 ", type=" + type +
                 ", status=" + status +
                 ", priority=" + priority +
-                ", name='" + name + '\'' +
-                ", metadata=" + metadata +
+                ", metadata='" + metadata + '\'' +
+                ", timestamp=" + timestamp +
                 ", description='" + description + '\'' +
                 '}';
     }
 }
-
-
