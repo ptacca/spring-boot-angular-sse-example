@@ -4,7 +4,7 @@ import tr.unvercanunlu.example.springbootsse.structure.Event;
 
 public interface EventService {
 
-    Event get();
+    void get(Event event);
 
     void send(Event event);
 }
