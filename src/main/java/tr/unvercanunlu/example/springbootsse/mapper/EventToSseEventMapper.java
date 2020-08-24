@@ -1,4 +1,4 @@
-package tr.unvercanunlu.example.springbootsse.component;
+package tr.unvercanunlu.example.springbootsse.mapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
