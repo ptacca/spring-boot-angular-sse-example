@@ -5,11 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import tr.unvercanunlu.example.springbootsse.model.ProductEvent;
 import tr.unvercanunlu.example.springbootsse.service.impl.EventServiceImpl;
 import tr.unvercanunlu.example.springbootsse.structure.Event;
 
@@ -51,13 +48,10 @@ public class EventController {
         return ResponseEntity.ok(emitter);
     }
 
-    @GetMapping(value = "/test")
-    public ResponseEntity<?> generateSimpleEventAndSend() {
-        Event productEvent = new ProductEvent();
-        LOGGER.info("Product Event is created: " + productEvent.toString());
-
-        this.eventService.send(productEvent);
-        LOGGER.info("Product Event is sent to Emitter List: " + productEvent.toString());
+    @PostMapping(value = "/new")
+    public ResponseEntity<?> getEvents(@RequestBody Event event) {
+        LOGGER.info("New event has been got.");
+        this.eventService.get(event);
 
         return ResponseEntity.noContent().build();
     }
