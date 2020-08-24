@@ -62,7 +62,7 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/test")
+    @PostMapping(value = "/test")
     public ResponseEntity<?> test() {
         class CustomEvent extends Event {
         }
