@@ -55,7 +55,7 @@ public class EventController {
     }
 
     @PostMapping(value = "/new")
-    public ResponseEntity<?> getEvents(@RequestBody Event event) {
+    public ResponseEntity<?> getEvent(@RequestBody Event event) {
         LOGGER.info("New event has been got.");
         this.eventService.get(event);
 
