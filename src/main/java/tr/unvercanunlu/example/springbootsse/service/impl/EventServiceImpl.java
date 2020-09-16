@@ -6,76 +6,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import tr.unvercanunlu.example.springbootsse.mapper.EventToSseEventMapper;
+import tr.unvercanunlu.example.springbootsse.mapper.EventMapper;
+import tr.unvercanunlu.example.springbootsse.model.Event;
 import tr.unvercanunlu.example.springbootsse.service.EventService;
-import tr.unvercanunlu.example.springbootsse.structure.Event;
 
-import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 @Service
 public class EventServiceImpl implements EventService {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(EventServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventServiceImpl.class);
 
-    private List<SseEmitter> emitters;
-    private List<Event> events;
+    public static final Hashtable<SseEmitter, List<Event>> EMITTERS_WITH_EVENTS = new Hashtable<>();
 
     @Value("${sse-reconnect}")
     private Long reconnectInMilliseconds;
 
     @Autowired
-    private EventToSseEventMapper eventToSseEventMapper;
-
-    public EventServiceImpl() {
-        this.events = new ArrayList<>();
-        this.emitters = new ArrayList<>();
-    }
-
-    public List<SseEmitter> getEmitters() {
-        return emitters;
-    }
-
-    public void setEmitters(List<SseEmitter> emitters) {
-        this.emitters = emitters;
-    }
-
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<Event> events) {
-        this.events = events;
-    }
+    private EventMapper eventMapper;
 
     @Override
-    public void get(Event event) {
-        this.events.add(event);
-        LOGGER.info("Event is added.");
-    }
+    public void send(SseEmitter emitter, Event event) {
+        try {
+            SseEmitter.SseEventBuilder builder = eventMapper.map(event, reconnectInMilliseconds);
+            LOGGER.debug("Event is created.");
 
-    @Override
-    public void send(Event event) {
-        List<SseEmitter> deadEmitters = new ArrayList<>();
-        LOGGER.info("Dead Emitter List is created.");
+            emitter.send(builder);
+            LOGGER.debug("Event is sent to Emitter.");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            LOGGER.debug("Emitter is dead.");
 
-        this.emitters.forEach(emitter -> {
-            try {
-                SseEmitter.SseEventBuilder builder = eventToSseEventMapper.map(event, reconnectInMilliseconds);
-                LOGGER.info("Event is created.");
-
-                emitter.send(builder);
-                LOGGER.info("Event is sent to Emitter.");
-            } catch (Exception exception) {
-                deadEmitters.add(emitter);
-                exception.printStackTrace();
-                LOGGER.error("Emitter is added to Dead Emitter List: " + exception.getMessage());
-            }
-        });
-
-        deadEmitters.forEach(emitter -> {
-            this.emitters.remove(emitter);
-            LOGGER.info("Dead Emitter is removed from Emitter List.");
-        });
+            EMITTERS_WITH_EVENTS.remove(emitter);
+            LOGGER.debug("Emitter is removed from Emitter .");
+        }
     }
 }

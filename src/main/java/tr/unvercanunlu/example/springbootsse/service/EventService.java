@@ -1,10 +1,9 @@
 package tr.unvercanunlu.example.springbootsse.service;
 
-import tr.unvercanunlu.example.springbootsse.structure.Event;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import tr.unvercanunlu.example.springbootsse.model.Event;
 
 public interface EventService {
 
-    void get(Event event);
-
-    void send(Event event);
+    void send(SseEmitter emitter, Event event);
 }
