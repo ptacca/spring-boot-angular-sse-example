@@ -13,7 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("*")
                 .allowedHeaders("*")
-                .allowCredentials(false)
-                .maxAge(Long.MAX_VALUE);
+                .allowCredentials(true);
     }
 }
