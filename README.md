@@ -1,2 +1,2 @@
-# spring-boot-sse-example
+# spring-boot-sse
 Spring Boot SSE Example

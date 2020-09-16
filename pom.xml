@@ -11,9 +11,9 @@
     </parent>
 
     <groupId>tr.unvercanunlu.example</groupId>
-    <artifactId>sse</artifactId>
+    <artifactId>spring-boot-sse</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-boot-sse-example</name>
+    <name>spring-boot-sse</name>
     <description>Spring Boot SSE Example</description>
 
     <properties>
