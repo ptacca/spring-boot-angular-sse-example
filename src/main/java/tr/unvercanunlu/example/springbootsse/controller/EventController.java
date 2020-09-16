@@ -2,85 +2,58 @@ package tr.unvercanunlu.example.springbootsse.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import tr.unvercanunlu.example.springbootsse.service.impl.EventServiceImpl;
-import tr.unvercanunlu.example.springbootsse.structure.Event;
-import tr.unvercanunlu.example.springbootsse.structure.EventPriority;
-import tr.unvercanunlu.example.springbootsse.structure.EventStatus;
-import tr.unvercanunlu.example.springbootsse.structure.EventType;
+import tr.unvercanunlu.example.springbootsse.model.Event;
 
-import java.time.LocalDateTime;
-import java.util.Random;
+import java.util.ArrayList;
+
+import static tr.unvercanunlu.example.springbootsse.service.impl.EventServiceImpl.EMITTERS_WITH_EVENTS;
 
 @RestController
 @RequestMapping(value = "/events")
 public class EventController {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(EventController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventController.class);
 
     @Value("${sse-timeout}")
     private Long timeoutInMilliseconds;
 
-    @Autowired
-    private EventServiceImpl eventService;
-
     @GetMapping(value = "/subscribe")
     public ResponseEntity<SseEmitter> subscribe() {
         SseEmitter emitter = new SseEmitter(timeoutInMilliseconds);
-        LOGGER.info("Emitter is initialized.");
+        LOGGER.debug("Emitter is initialized.");
 
         emitter.onError(throwable -> {
+            LOGGER.error("Emitter has error.");
             throwable.printStackTrace();
-            LOGGER.error("Emitter has error: " + throwable.getMessage());
+            LOGGER.debug("Emitter is removed from Emitter Table on error.");
         });
 
         emitter.onCompletion(() -> {
-            eventService.getEmitters().remove(emitter);
-            LOGGER.info("Emitter is removed from Emitter List on completion.");
+            LOGGER.error("Emitter is completed.");
+            EMITTERS_WITH_EVENTS.remove(emitter);
+            LOGGER.debug("Emitter is removed from Emitter Table on completion.");
         });
 
         emitter.onTimeout(() -> {
-            eventService.getEmitters().remove(emitter);
-            LOGGER.info("Emitter is removed from Emitter List on timeout.");
+            LOGGER.error("Emitter has timeout.");
+            EMITTERS_WITH_EVENTS.remove(emitter);
+            LOGGER.debug("Emitter is removed from Emitter Table on timeout.");
         });
 
-        eventService.getEmitters().add(emitter);
-        LOGGER.info("Emitter is added to Emitter list.");
+        EMITTERS_WITH_EVENTS.put(emitter, new ArrayList<>());
+        LOGGER.debug("Emitter is added to Emitter Table.");
 
         return ResponseEntity.ok(emitter);
     }
 
     @PostMapping(value = "/new")
     public ResponseEntity<?> getEvent(@RequestBody Event event) {
-        LOGGER.info("New event has been got.");
-        this.eventService.get(event);
+        LOGGER.debug("New event is got.");
 
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping(value = "/test")
-    public ResponseEntity<?> test() {
-        class CustomEvent extends Event {
-        }
-        LOGGER.info("Custom event class is created.");
-
-        CustomEvent customEvent = new CustomEvent();
-        customEvent.setName("custom");
-        customEvent.setDescription("description");
-        customEvent.setPriority(EventPriority.values()[new Random().nextInt(EventPriority.values().length)]);
-        customEvent.setStatus(EventStatus.values()[new Random().nextInt(EventStatus.values().length)]);
-        customEvent.setType(EventType.values()[new Random().nextInt(EventType.values().length)]);
-        customEvent.setTimestamp(LocalDateTime.now());
-        customEvent.setMetadata("metadata");
-        LOGGER.info("Custom event is created.");
-
-        this.eventService.send(customEvent);
-        LOGGER.info("Custom event is sent.");
-
-        return ResponseEntity.ok(customEvent);
+        return ResponseEntity.ok(event);
     }
 }
