@@ -1,2 +1,2 @@
-# spring-boot-sse
-Spring Boot SSE Example
+# spring-boot-angular-sse
+Spring Boot Angular SSE Example
