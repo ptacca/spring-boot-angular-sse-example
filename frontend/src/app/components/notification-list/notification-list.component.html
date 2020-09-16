@@ -1,0 +1,12 @@
+<div class="alert alert-primary alert-dismissible"
+     *ngFor="let notification of notifications">
+  <div class="text-center small">
+    <span>{{notification.name}}</span> -
+    <span>{{notification.priority}}</span> -
+    <span>{{notification.type}}</span> -
+    <span>{{notification.status}}</span>
+  </div>
+  <button type="button" class="close" data-dismiss="alert">
+    <span>&times;</span>
+  </button>
+</div>
