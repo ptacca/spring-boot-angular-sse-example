@@ -1,13 +1,20 @@
-package tr.unvercanunlu.example.springbootsse.structure;
+package tr.unvercanunlu.example.springbootsse.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import tr.unvercanunlu.example.springbootsse.constant.DateTimeFormat;
+import tr.unvercanunlu.example.springbootsse.config.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class Event {
 
     private String name;
+
+    private String description;
+
+    @JsonFormat(pattern = DateTimeFormat.UTC_DATETIME_FORMAT)
+    private LocalDateTime timestamp;
 
     private EventType type;
 
@@ -15,14 +22,10 @@ public class Event {
 
     private EventPriority priority;
 
-    private String metadata;
-
-    @JsonFormat(pattern = DateTimeFormat.TIMESTAMP_FORMAT)
-    private LocalDateTime timestamp;
-
-    private String description;
+    private Object data;
 
     public Event() {
+        this.setTimestamp(ZonedDateTime.now().withZoneSameLocal(ZoneId.of("UTC")).toLocalDateTime());
     }
 
     public String getName() {
@@ -73,24 +76,24 @@ public class Event {
         this.description = description;
     }
 
-    public String getMetadata() {
-        return metadata;
+    public Object getData() {
+        return data;
     }
 
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
+    public void setData(Object data) {
+        this.data = data;
     }
 
     @Override
     public String toString() {
         return "Event{" +
-                "name='" + name + '\'' +
+                "name='" + name + "'" +
+                ", description='" + description + "'" +
+                ", timestamp=" + timestamp +
                 ", type=" + type +
                 ", status=" + status +
                 ", priority=" + priority +
-                ", metadata='" + metadata + '\'' +
-                ", timestamp=" + timestamp +
-                ", description='" + description + '\'' +
+                ", data=" + data +
                 '}';
     }
 }
